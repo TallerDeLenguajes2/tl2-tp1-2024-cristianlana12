@@ -6,6 +6,8 @@ namespace cadeteria
 
         public int Nro {get; set;}
         public string? obs;
+        internal Estado Estado;
+
         public Cliente? Cliente {get; set;}
 
         public Estado estado {get; set;}

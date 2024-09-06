@@ -41,7 +41,7 @@ internal class Program
 
             cadeteria.AltaCadete(new Cadete(int.Parse(datos[0]), datos[1], datos[2], datos[3]));
         }
-    }
+    }q
 
     private static List<string> LeerCsv(string archivo, bool cabecera = true)
     {

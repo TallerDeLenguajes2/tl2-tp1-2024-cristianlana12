@@ -27,7 +27,7 @@ namespace cadeteria
         }
 
         public void AsignarCadete(Cadete cadete, Pedido pedido)
-        
+
         {
             cadete.ListadoPedidos.Add(pedido);
             var cadeteReasignado = ListadoCadetes.Where(c => c.Id != cadete.Id && c.ListadoPedidos.Contains(pedido)).FirstOrDefault();
@@ -36,18 +36,26 @@ namespace cadeteria
             ListadoPedidos.Remove(pedido);
         }
 
+        public void AltaCadete(Cadete cadete){
+            ListadoCadetes.Remove(cadete);
+        }
+
         public List<Pedido> ObtenerPedidosAsignados()
-        
+
         {
             return ListadoCadetes.SelectMany(cadete => cadete.ListadoPedidos).Where(pedido => pedido.estado == Estado.PENDIENTE).ToList();
         }
 
         public List<Pedido> ObtenerTodosLosPedidos()
-        
+
         {
             return ListadoPedidos.Concat(ObtenerPedidosAsignados()).ToList();
         }
 
+        public override string ToString()
+    {
+        return $"CADETERIA: {nombre} - {telefono}";
+    }
         
     }
 }

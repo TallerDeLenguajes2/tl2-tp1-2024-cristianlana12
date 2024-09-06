@@ -27,8 +27,8 @@ internal class Program
         return new Cadeteria(datos[0], datos[1]);
     }
 
-    private static void cargarPedidos(Cadeteria cadeteria){
-        var Csv = LeerCsv("DatosCadeteria.csv");
+    private static void cargarCadetes(Cadeteria cadeteria){
+        var Csv = LeerCsv("DatosCadetes.csv");
 
         foreach (var linea in Csv)
         {

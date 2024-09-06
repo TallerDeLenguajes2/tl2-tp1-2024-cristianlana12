@@ -8,12 +8,27 @@ internal class Program
         try
         {
             cadeteria = CrearCadeteria();
+            cargarCadetes(cadeteria);
         }
-        catch (System.Exception)
+        catch (System.Exception e)
         {
-            
+            mostrarError(e.Message)
             throw;
         }
+
+        int opcionSeleccionado = 0;
+        int opcionSalida = 5;
+
+        do
+        {
+            Console.WriteLine("### MENU PRINCIPAL ###\n");
+            Console.WriteLine("\t1- Dar de alta un pedido");
+            Console.WriteLine("\t2- Asignar un pedido a un cadete");
+            Console.WriteLine("\t3- Cambiar el estado de un pedido");
+            Console.WriteLine("\t4- Reasignar el cadete en un pedido");
+            Console.WriteLine("\t5- Salir del programa");
+            Console.Write("\n>Seleccione una opcion: ");
+        } while ();
     }
 
     private static Cadeteria CrearCadeteria()
@@ -62,5 +77,9 @@ internal class Program
         }
 
         return lineas;
+    }
+
+    private static void mostrarError(string error){
+        Console.WriteLine($"\n[!] ERROR: {error}\n");
     }
 }

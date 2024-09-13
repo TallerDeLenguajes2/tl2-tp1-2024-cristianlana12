@@ -2,7 +2,7 @@
 
 internal class Program
 {
-    private static Cadeteria  cadeteria;
+    private static Cadeteria cadeteria;
     private static void Main(string[] args)
     {
         try
@@ -12,8 +12,7 @@ internal class Program
         }
         catch (System.Exception e)
         {
-            mostrarError(e.Message)
-            throw;
+            mostrarError(e.Message);
         }
 
         int opcionSeleccionado = 0;
@@ -28,7 +27,34 @@ internal class Program
             Console.WriteLine("\t4- Reasignar el cadete en un pedido");
             Console.WriteLine("\t5- Salir del programa");
             Console.Write("\n>Seleccione una opcion: ");
-        } while ();
+
+            var strSeleccion = Console.ReadLine() ?? string.Empty;
+
+            try
+            {
+                if (!int.TryParse(strSeleccion, out opcionSeleccionado))
+                {
+                    throw new Exception("debe ingresar un numero entero");
+                }
+                else if (opcionSeleccionado < 1 || opcionSeleccionado > opcionSalida)
+                {
+                    throw new Exception("Debe ingresar una opcion valida");
+                }else{
+                    switch (opcionSeleccionado)
+                    {
+                        case 1:
+
+                        break;
+                    }
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+        } while (opcionSeleccionado != opcionSalida);
     }
 
     private static Cadeteria CrearCadeteria()
@@ -37,12 +63,13 @@ internal class Program
 
         var datos = Csv[0].Split(",");
 
-        if(datos.Count() < 2)throw new Exception("No hay datos suficientes para instanciar la cadeteria");
+        if (datos.Count() < 2) throw new Exception("No hay datos suficientes para instanciar la cadeteria");
 
         return new Cadeteria(datos[0], datos[1]);
     }
 
-    private static void cargarCadetes(Cadeteria cadeteria){
+    private static void cargarCadetes(Cadeteria cadeteria)
+    {
         var Csv = LeerCsv("DatosCadetes.csv");
 
         foreach (var linea in Csv)
@@ -56,7 +83,7 @@ internal class Program
 
             cadeteria.AltaCadete(new Cadete(int.Parse(datos[0]), datos[1], datos[2], datos[3]));
         }
-    }q
+    }
 
     private static List<string> LeerCsv(string archivo, bool cabecera = true)
     {
@@ -79,7 +106,8 @@ internal class Program
         return lineas;
     }
 
-    private static void mostrarError(string error){
+    private static void mostrarError(string error)
+    {
         Console.WriteLine($"\n[!] ERROR: {error}\n");
     }
 }

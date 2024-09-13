@@ -51,6 +51,19 @@ internal class Program
                             cadeteria.tomarPedido(pedidoNew);
                             MostrarResultadoExitoso($"Nuevo pedido generado con exito NRO: {pedidoNew.Nro} --- CLIENTE: {cliente.Nombre}");
                             break;
+                        case 2:
+                            if (!cadeteria.ListadoCadetes.Any()) throw new Exception("No hay cadetes para asignarle este pedidio");
+                            if (!cadeteria.ListadoPedidos.Any()) throw new Exception("No hay pedidos para asignarle a los cadetes");
+
+                            Console.WriteLine("\n\n### ASIGNANDO PEDIDO ###\n");
+                            var pedidoNew2 = SolicitarSeleccionPedidos(cadeteria.ListadoPedidos);
+                            Console.WriteLine();
+                            var cadete = SolicitarSeleccionCadete();
+
+                            cadeteria.AsignarCadete(cadete, pedidoNew2);
+                            MostrarResultadoExitoso($"El pedido nro. {pedidoNew2.Nro} ha sido asignado al cadete {cadete.Nombre} ({cadete.Id})");
+
+                            break;
                     }
                 }
             }
@@ -147,14 +160,52 @@ internal class Program
         System.Console.Write("> Ingrese datos o referencias de la dirección del cliente (opcional): ");
         var datosRerencia = Console.ReadLine() ?? string.Empty;
 
-        return new Cliente(DNI, stringNombreCliente,direccion, telefono, datosRerencia);
+        return new Cliente(DNI, stringNombreCliente, direccion, telefono, datosRerencia);
     }
     private static Pedido SolicitarDatosPedido(Cliente cliente)
     {
         Console.WriteLine("> Ingresar los detalles del pedido (OBLIGATORIO) <");
         var detalles = Console.ReadLine() ?? string.Empty;
-        if(string.IsNullOrWhiteSpace(detalles)) throw new Exception("Los Detalles no pueden estar vacios");
+        if (string.IsNullOrWhiteSpace(detalles)) throw new Exception("Los Detalles no pueden estar vacios");
 
         return new Pedido(detalles, cliente);
+    }
+    private static Pedido SolicitarSeleccionPedidos(List<Pedido> listadoPedidos)
+    {
+        var detallePedidos = listadoPedidos.Select(pedido => pedido.ToString());
+        foreach (var detallePedido in detallePedidos)
+        {
+            Console.WriteLine($"\t* {detallePedido}");
+        }
+        Console.WriteLine("\n> Ingrese el numero del pedido a asignar: <");
+        var stringNumero = Console.ReadLine() ?? string.Empty;
+        var nroPedido = 0;
+
+        if (!int.TryParse(stringNumero, out nroPedido)) throw new Exception("Debe ingresar un numero entero para seleccionar el pedido ");
+
+        var pedidoSeleccionado = listadoPedidos.Where(p => p.Nro == nroPedido).FirstOrDefault();
+        if (pedidoSeleccionado == null) throw new Exception($"El numero de pedido es invalido ({nroPedido})");
+
+        return pedidoSeleccionado;
+    }
+    private static Cadete SolicitarSeleccionCadete()
+    {
+        var detallesCadetes = cadeteria.ListadoCadetes.Select(cadete => cadete.ToString());
+        foreach (var detalle in detallesCadetes)
+        {
+            Console.WriteLine($"\t- {detalle}");
+        }
+
+        Console.WriteLine("\n> Ingrese el ID del cadete al cual asignarle el pedido:  <");
+        var stringId = Console.ReadLine() ?? string.Empty;
+        var id = 0;
+
+        if (!int.TryParse(stringId, out id)) throw new Exception("El ID debe ser un numero");
+
+        var cadeteSeleccionado = cadeteria.ListadoCadetes.Where(cadete => cadete.Id == id).FirstOrDefault();
+
+        if (cadeteSeleccionado == null) throw new Exception($"No existe ningun cadete con el ID: {id}");
+
+        return cadeteSeleccionado;
     }
 }

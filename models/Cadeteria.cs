@@ -36,7 +36,8 @@ namespace cadeteria
             ListadoPedidos.Remove(pedido);
         }
 
-        public void AltaCadete(Cadete cadete){
+        public void AltaCadete(Cadete cadete)
+        {
             ListadoCadetes.Remove(cadete);
         }
 
@@ -53,9 +54,9 @@ namespace cadeteria
         }
 
         public override string ToString()
-    {
-        return $"CADETERIA: {nombre} - {telefono}";
-    }
-        
+        {
+            return $"CADETERIA: {Nombre} - {Telefono}";
+        }
+
     }
 }

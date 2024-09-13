@@ -39,12 +39,15 @@ internal class Program
                 else if (opcionSeleccionado < 1 || opcionSeleccionado > opcionSalida)
                 {
                     throw new Exception("Debe ingresar una opcion valida");
-                }else{
+                }
+                else
+                {
                     switch (opcionSeleccionado)
                     {
                         case 1:
-
-                        break;
+                            Console.WriteLine("\n\n ### INGRESAR PEDIDO ###\n");
+                            var cliente = SolicitarDatosCliente();
+                            break;
                     }
                 }
             }
@@ -109,5 +112,31 @@ internal class Program
     private static void mostrarError(string error)
     {
         Console.WriteLine($"\n[!] ERROR: {error}\n");
+    }
+
+    private static Cliente SolicitarDatosCliente()
+    {
+        Console.WriteLine("> Ingresar DNI del CLIENTE (SIN PUNTOS NI ESPACIOS) <");
+        var DNI = 0;
+        var stringDni = Console.ReadLine() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(stringDni)) throw new Exception("El DNI no debe estar vacio");
+        if (!int.TryParse(stringDni, out DNI)) throw new Exception("El DNI debe ser un numero");
+
+        Console.WriteLine("> Ingrese el NOMBRE del CLIENTE <");
+        var stringNombreCliente = Console.ReadLine() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(stringNombreCliente)) throw new Exception("El NOMBRE no puede estar vacio");
+
+        System.Console.Write("> Ingrese el telefono del cliente: ");
+        var telefono = Console.ReadLine() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(telefono)) throw new Exception("El teléfono no puede estar vacío");
+
+        System.Console.Write("> Ingrese la dirección del cliente: ");
+        var direccion = Console.ReadLine() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(direccion)) throw new Exception("La dirección no puede estar vacía");
+
+        System.Console.Write("> Ingrese datos o referencias de la dirección del cliente (opcional): ");
+        var datosRerencia = Console.ReadLine() ?? string.Empty;
+
+        return new Cliente(DNI, stringNombreCliente,direccion, telefono, datosRerencia);
     }
 }

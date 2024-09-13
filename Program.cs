@@ -47,6 +47,9 @@ internal class Program
                         case 1:
                             Console.WriteLine("\n\n ### INGRESAR PEDIDO ###\n");
                             var cliente = SolicitarDatosCliente();
+                            var pedidoNew = SolicitarDatosPedido(cliente);
+                            cadeteria.tomarPedido(pedidoNew);
+                            MostrarResultadoExitoso($"Nuevo pedido generado con exito NRO: {pedidoNew.Nro} --- CLIENTE: {cliente.Nombre}");
                             break;
                     }
                 }
@@ -60,6 +63,13 @@ internal class Program
         } while (opcionSeleccionado != opcionSalida);
     }
 
+
+    private static void MostrarResultadoExitoso(string mensaje)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        System.Console.WriteLine($"\n[/] {mensaje}\n");
+        Console.ResetColor();
+    }
     private static Cadeteria CrearCadeteria()
     {
         var Csv = LeerCsv("datosCadeteria.csv");
@@ -138,5 +148,13 @@ internal class Program
         var datosRerencia = Console.ReadLine() ?? string.Empty;
 
         return new Cliente(DNI, stringNombreCliente,direccion, telefono, datosRerencia);
+    }
+    private static Pedido SolicitarDatosPedido(Cliente cliente)
+    {
+        Console.WriteLine("> Ingresar los detalles del pedido (OBLIGATORIO) <");
+        var detalles = Console.ReadLine() ?? string.Empty;
+        if(string.IsNullOrWhiteSpace(detalles)) throw new Exception("Los Detalles no pueden estar vacios");
+
+        return new Pedido(detalles, cliente);
     }
 }

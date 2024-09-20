@@ -4,11 +4,11 @@ namespace cadeteria
     public class Cadeteria
 
     {
-        public string? Nombre { get; set; }
-        public string? Telefono { get; set; }
+        public string Nombre { get; set; } 
+        public string Telefono { get; set; }
 
-        public List<Cadete>? ListadoCadetes { get; set; }
-        public List<Pedido>? ListadoPedidos { get; set; }
+        public List<Cadete> ListadoCadetes { get; set; }
+        public List<Pedido> ListadoPedidos { get; set; }
 
         public Cadeteria(string nombre, string telefono)
 
@@ -21,7 +21,6 @@ namespace cadeteria
         }
 
         public void tomarPedido(Pedido newPedido)
-
         {
             ListadoPedidos.Add(newPedido);
         }
@@ -38,7 +37,7 @@ namespace cadeteria
 
         public void AltaCadete(Cadete cadete)
         {
-            ListadoCadetes.Remove(cadete);
+            ListadoCadetes.Add(cadete);
         }
 
         public List<Pedido> ObtenerPedidosAsignados()

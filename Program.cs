@@ -8,6 +8,7 @@ internal class Program
         try
         {
             cadeteria = CrearCadeteria();
+            if (cadeteria == null) throw new Exception("No se pudo crear la cadeteria.");
             cargarCadetes(cadeteria);
         }
         catch (System.Exception e)

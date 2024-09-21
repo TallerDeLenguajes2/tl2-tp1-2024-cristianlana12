@@ -2,7 +2,7 @@ namespace cadeteria
 {
     public class Cadete
     {
-        private float pagoPorPedido;
+        private const float pagoPorPedido = 500f;
 
         public int Id { get; set; }
         public string Nombre { get; set; }
@@ -33,6 +33,11 @@ namespace cadeteria
             Esta expresión significa: "Para cada pedido p en ListadoPedidos, revisa si el Estado de ese pedido (p.Estado)
             es igual al estado e que se pasó como parámetro". Si es verdadero, el pedido p se incluye en el resultado; si es falso, no se incluye.
             */
+        }
+
+        public override string ToString()
+        {
+            return $"CADETE: {Id} - {Nombre} - {Direccion} - {Telefono}";
         }
     }
 }

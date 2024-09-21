@@ -12,12 +12,9 @@ namespace cadeteria
 
         public Estado estado {get; set;}
 
-        public Cadete cadete {get; set;}
-
         public Pedido (string observaciones, Cliente cliente){
             Nro = ++numGenerado; //generamos el ID de forma consecutiva
-            this.Estado = Estado.PENDIENTE;
-            this.cadete = new Cadete();
+            estado = Estado.PENDIENTE;
             this.obs = observaciones;
             this.Cliente = cliente;
         }

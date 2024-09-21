@@ -7,8 +7,8 @@ namespace cadeteria
         public string Nombre { get; set; } 
         public string Telefono { get; set; }
 
-        public List<Cadete> ListadoCadetes { get; set; }
-        public List<Pedido> ListadoPedidos { get; set; }
+        private List<Cadete> listadoCadetes;
+        private List<Pedido> listadoPedidos;
 
         public Cadeteria(string nombre, string telefono)
 
@@ -19,6 +19,8 @@ namespace cadeteria
             ListadoCadetes = new List<Cadete>();
             ListadoPedidos = new List<Pedido>();
         }
+        public List<Cadete> ListadoCadetes { get => listadoCadetes; set => listadoCadetes = value; }
+        public List<Pedido> ListadoPedidos { get => listadoPedidos; set => listadoPedidos = value; }
 
         public void tomarPedido(Pedido newPedido)
         {

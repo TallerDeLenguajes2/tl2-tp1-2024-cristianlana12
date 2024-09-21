@@ -49,6 +49,7 @@ internal class Program
                             Console.WriteLine("\n\n ### INGRESAR PEDIDO ###\n");
                             var cliente = SolicitarDatosCliente();
                             var pedidoNew = SolicitarDatosPedido(cliente);
+                            if (pedidoNew == null) throw new Exception("No se pudo crear el pedido.");
                             cadeteria.tomarPedido(pedidoNew);
                             MostrarResultadoExitoso($"Nuevo pedido generado con exito NRO: {pedidoNew.Nro} --- CLIENTE: {cliente.Nombre}");
                             break;
@@ -86,7 +87,7 @@ internal class Program
     }
     private static Cadeteria CrearCadeteria()
     {
-        var Csv = LeerCsv("datosCadeteria.csv");
+        var Csv = LeerCsv(@"..\..\..\datosCadeteria.csv");
 
         var datos = Csv[0].Split(",");
 

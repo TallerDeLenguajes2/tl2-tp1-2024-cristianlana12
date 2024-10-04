@@ -1,15 +1,30 @@
+using System.Text.Json.Serialization;
+
 namespace cadeteria
 {
     public class Cadete
     {
         private const float pagoPorPedido = 500f;
-
+        [JsonPropertyName("id")]
         public int Id { get; set; }
+        [JsonPropertyName("nombre")]
         public string Nombre { get; set; }
+
+        [JsonPropertyName("direccion")]
         public string Direccion { get; set; }
+
+        [JsonPropertyName("telefono")]
         public string Telefono { get; set; }
 
         public List<Pedido> ListadoPedidos { get; set; }
+
+        public Cadete()
+        {
+            Id = -1;
+            Nombre = string.Empty;
+            Direccion = string.Empty;
+            Telefono = string.Empty;
+        }
 
         public Cadete(int id, string nombre, string direccion, string telefono)
         {
@@ -20,10 +35,7 @@ namespace cadeteria
             this.ListadoPedidos = new List<Pedido>();
         }
 
-        public float JornalACobrar()
-        {
-            return pagoPorPedido * ListadoPedidos.Where(p => p.Estado == Estado.COMPLETADO).Count();
-        }
+
 
         public List<Pedido> buscarPedidos(Estado e)
         {

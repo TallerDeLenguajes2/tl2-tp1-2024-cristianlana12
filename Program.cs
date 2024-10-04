@@ -1,4 +1,5 @@
 ﻿using cadeteria;
+using persistencia;
 
 internal class Program
 {
@@ -7,6 +8,32 @@ internal class Program
     {
         try
         {
+            AccesoDatos? acceso;
+            System.Console.WriteLine("--- Seleccione el tipo de acceso a los datos ---");
+            System.Console.WriteLine("\n\t1. CSV");
+            System.Console.WriteLine("\t2. JSON");
+            System.Console.Write("\n> Digite su opcion: ");
+            string strOpcion = Console.ReadLine() ?? string.Empty;
+
+            if (!int.TryParse(strOpcion, out int opcion))
+            {
+                mostrarError("Opción inválida. No se puede proceder con el cargado de datos.");
+                return;
+            }
+
+            acceso = opcion switch
+            {
+                1 => new AccesoCsv(),
+                2 => new AccesoJson(),
+                _ => null
+            };
+
+            if (acceso == null)
+            {
+                MostrarError("Opción inválida. No se puede proceder con el cargado de datos.");
+                return;
+            }
+
             cadeteria = CrearCadeteria();
             if (cadeteria == null) throw new Exception("No se pudo crear la cadeteria.");
             cargarCadetes(cadeteria);
@@ -66,17 +93,60 @@ internal class Program
                             MostrarResultadoExitoso($"El pedido nro. {pedidoNew2.Nro} ha sido asignado al cadete {cadete.Nombre} ({cadete.Id})");
 
                             break;
+                        case 3:
+                            var pedidos = cadeteria.ObtenerTodosLosPedidos();
+                            if (!pedidos.Any()) throw new Exception("No hay pedidos a los cuales modificarles el estado");
+
+                            System.Console.WriteLine("\n\n*** MODIFICANDO ESTADO DE UN PEDIDO ***\n");
+
+                            var pedidoC = SolicitarSeleccionPedidos(pedidos);
+                            System.Console.WriteLine();
+                            var nuevoEstado = SolicitarSeleccionEstados();
+                            pedidoC.Estado = nuevoEstado;
+
+                            MostrarResultadoExitoso($"El estado del pedido nro. {pedidoC.Nro} ha sido modificado a: {nuevoEstado}");
+                            break;
+
+                        case 4:
+                            var pedidosAsignados = cadeteria.ObtenerPedidosAsignados();
+                            if (!pedidosAsignados.Any()) throw new Exception("No hay pedidos para reasignar");
+
+                            System.Console.WriteLine("\n\n*** REASIGNANDO UN PEDIDO ***\n");
+
+                            var pedidoD = SolicitarSeleccionPedidos(pedidosAsignados);
+                            System.Console.WriteLine();
+                            var cadeteB = SolicitarSeleccionCadete();
+                            cadeteria.AsignarCadete(cadeteB, pedidoD);
+                            MostrarResultadoExitoso($"El pedido nro. {pedidoD.Nro} ha sido re-asignado al cadete {cadeteB.Nombre} ({cadeteB.Id})");
+                            break;
+
+                        default:
+                            Console.WriteLine("\nSaliendo...");
+                            break;
                     }
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-
-                throw;
+                mostrarError(e.Message);
             }
 
         } while (opcionSeleccionado != opcionSalida);
+
+        Console.WriteLine("\n\n ### Informe ###");
+        System.Console.WriteLine("* Envíos de cada cadete:");
+        int totalEnvios = 0;
+        foreach (var cadete in cadeteria.ListadoCadetes)
+        {
+            System.Console.WriteLine($"\t> CADETE ID {cadete.Id} ({cadete.Nombre}) - Envíos terminados: {cadete.buscarPedidos(Estado.COMPLETADO).Count()} - Envíos pendientes: {cadete.buscarPedidos(Estado.PENDIENTE).Count()}");
+            totalEnvios += cadete.ListadoPedidos.Count();
+        }
+        System.Console.WriteLine($"\n* Envíos totales del día: {totalEnvios}");
+
+        System.Console.WriteLine($"* Promedio de envíos por cadete: {cadeteria.ListadoCadetes.Select(c => c.ListadoPedidos.Count()).Average()}");
     }
+
+
 
 
     private static void MostrarResultadoExitoso(string mensaje)
@@ -87,7 +157,7 @@ internal class Program
     }
     private static Cadeteria CrearCadeteria()
     {
-        var Csv = LeerCsv(@"..\..\..\datosCadeteria.csv");
+        var Csv = LeerCsv("datosCadeteria.csv");
 
         var datos = Csv[0].Split(",");
 
@@ -209,5 +279,23 @@ internal class Program
         if (cadeteSeleccionado == null) throw new Exception($"No existe ningun cadete con el ID: {id}");
 
         return cadeteSeleccionado;
+    }
+
+    private static Estado SolicitarSeleccionEstados()
+    {
+        int contador = 0;
+        foreach (var estado in Enum.GetValues(typeof(Estado)))
+        {
+            System.Console.WriteLine($"> ID {++contador}. {estado}");
+        }
+
+        System.Console.Write("> Selecciona el ID del nuevo estado para el pedido: ");
+        var strOpcion = Console.ReadLine() ?? string.Empty;
+
+        Estado nuevoEstado;
+        if (!Enum.TryParse(strOpcion, out nuevoEstado))
+            throw new Exception("Seleccione un ID válido");
+
+        return nuevoEstado;
     }
 }

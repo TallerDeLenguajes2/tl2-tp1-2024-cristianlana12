@@ -71,3 +71,44 @@ public class AccesoCsv : AccesoDatos
         return lineas;
     }
 }
+
+public class AccesoJson : AccesoDatos
+{
+    public Cadeteria CrearCadeteria()
+    {
+        var datosCadeteriaJson = LeerArchivo("datosCadeteria.json").FirstOrDefault(); 
+        
+        if (string.IsNullOrWhiteSpace(datosCadeteriaJson))
+            throw new Exception("No se pudieron leer los datos de la cadeteria del json");
+
+        var cadeteria = JsonSerializer.Deserialize<Cadeteria>(datosCadeteriaJson);
+
+        if (cadeteria == null)
+            throw new Exception("Ha ocurrido un error deserealizando los datos de la cadeteria");
+
+        return cadeteria;
+    }
+
+    public List<Cadete> CrearCadetes()
+    {
+        var datosCadetesJson = LeerArchivo("datosCadetes.json").FirstOrDefault();
+        
+        if (string.IsNullOrWhiteSpace(datosCadetesJson))
+            return new List<Cadete>();
+
+        var cadetes = JsonSerializer.Deserialize<List<Cadete>>(datosCadetesJson);
+
+        if (cadetes == null)
+            return new List<Cadete>();
+
+        return cadetes;
+    }
+
+    public List<string> LeerArchivo(string nombreArchivo)
+    {
+        if (!File.Exists(nombreArchivo))
+            throw new Exception($"El archivo {nombreArchivo} no existe");
+
+        return new List<string>() { File.ReadAllText(nombreArchivo) };
+    }
+}

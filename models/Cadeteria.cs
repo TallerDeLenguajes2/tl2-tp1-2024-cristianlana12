@@ -2,7 +2,6 @@ using System.IO.Compression;
 using System.Text.Json.Serialization;
 
 namespace cadeteria
-
 {
     public class Cadeteria
 
@@ -54,15 +53,7 @@ namespace cadeteria
         {
             ListadoCadetes.Add(cadete);
         }
-
-        public List<Pedido> ObtenerPedidosAsignados()
-
-        {
-            return ListadoCadetes.SelectMany(cadete => cadete.ListadoPedidos).Where(pedido => pedido.estado == Estado.PENDIENTE).ToList();
-        }
-
         public List<Pedido> ObtenerTodosLosPedidos()
-
         {
             return ListadoPedidos.Concat(pedidosAsignados).ToList();
         }
@@ -78,7 +69,7 @@ namespace cadeteria
         {
             return pedidosAsignados.Where(p => p.Cadete.Id == idCadete).ToList();
         }
-
+        
         public override string ToString()
         {
             return $"CADETERIA: {Nombre} - {Telefono}";

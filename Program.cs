@@ -30,17 +30,18 @@ internal class Program
 
             if (acceso == null)
             {
-                MostrarError("Opción inválida. No se puede proceder con el cargado de datos.");
+                mostrarError("Opción inválida. No se puede proceder con el cargado de datos.");
                 return;
             }
 
             cadeteria = CrearCadeteria();
+            cadeteria.ListadoCadetes = acceso.CrearCadetes();
             if (cadeteria == null) throw new Exception("No se pudo crear la cadeteria.");
-            cargarCadetes(cadeteria);
         }
         catch (System.Exception e)
         {
             mostrarError(e.Message);
+            return;
         }
 
         int opcionSeleccionado = 0;
@@ -48,7 +49,7 @@ internal class Program
 
         do
         {
-            Console.WriteLine("### MENU PRINCIPAL ###\n");
+            Console.WriteLine($"### MENU PRINCIPAL  - {cadeteria?.Nombre}###\n");
             Console.WriteLine("\t1- Dar de alta un pedido");
             Console.WriteLine("\t2- Asignar un pedido a un cadete");
             Console.WriteLine("\t3- Cambiar el estado de un pedido");
@@ -108,7 +109,7 @@ internal class Program
                             break;
 
                         case 4:
-                            var pedidosAsignados = cadeteria.ObtenerPedidosAsignados();
+                            var pedidosAsignados = cadeteria.PedidosAsignados;
                             if (!pedidosAsignados.Any()) throw new Exception("No hay pedidos para reasignar");
 
                             System.Console.WriteLine("\n\n*** REASIGNANDO UN PEDIDO ***\n");
@@ -138,12 +139,19 @@ internal class Program
         int totalEnvios = 0;
         foreach (var cadete in cadeteria.ListadoCadetes)
         {
-            System.Console.WriteLine($"\t> CADETE ID {cadete.Id} ({cadete.Nombre}) - Envíos terminados: {cadete.buscarPedidos(Estado.COMPLETADO).Count()} - Envíos pendientes: {cadete.buscarPedidos(Estado.PENDIENTE).Count()}");
+            int nEnviosCompletados = cadeteria.BuscarPedidos(cadete.Id)
+                                  .Where(p => p.Estado == Estado.COMPLETADO)
+                                  .Count();
+            int nEnviosPendientes = cadeteria.BuscarPedidos(cadete.Id)
+                                             .Where(p => p.Estado == Estado.PENDIENTE)
+                                             .Count();
+            int totalPedidos = nEnviosCompletados + nEnviosPendientes;
+
+            System.Console.WriteLine($"\t> CADETE ID {cadete.Id} ({cadete.Nombre}) - Envíos terminados: {nEnviosCompletados} - Envíos pendientes: {nEnviosPendientes}");
             totalEnvios += cadete.ListadoPedidos.Count();
         }
         System.Console.WriteLine($"\n* Envíos totales del día: {totalEnvios}");
 
-        System.Console.WriteLine($"* Promedio de envíos por cadete: {cadeteria.ListadoCadetes.Select(c => c.ListadoPedidos.Count()).Average()}");
     }
 
 
@@ -206,7 +214,9 @@ internal class Program
 
     private static void mostrarError(string error)
     {
-        Console.WriteLine($"\n[!] ERROR: {error}\n");
+        Console.ForegroundColor = ConsoleColor.Red;
+        System.Console.WriteLine($"\n[!] Error: {error}\n");
+        Console.ResetColor();
     }
 
     private static Cliente SolicitarDatosCliente()

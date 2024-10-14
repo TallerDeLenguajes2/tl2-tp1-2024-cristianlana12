@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "nombre": "Juan Pérez",
+        "direccion": "Calle Falsa 123",
+        "telefono": "1234567"
+    },
+    {
+        "id": 2,
+        "nombre": "María Gómez",
+        "direccion": "Avenida Siempre Viva 456",
+        "telefono": "2345678"
+    },
+    {
+        "id": 3,
+        "nombre": "Pedro Rodríguez",
+        "direccion": "Plaza Mayor 789",
+        "telefono": "3456789"
+    },
+    {
+        "id": 4,
+        "nombre": "Ana Martínez",
+        "direccion": "Calle del Sol 101",
+        "telefono": "4567890"
+    },
+    {
+        "id": 5,
+        "nombre": "Luis Fernández",
+        "direccion": "Calle Luna 202",
+        "telefono": "5678901"
+    },
+    {
+        "id": 6,
+        "nombre": "Carmen Sánchez",
+        "direccion": "Calle Estrella 303",
+        "telefono": "6789012"
+    },
+    {
+        "id": 7,
+        "nombre": "José Díaz",
+        "direccion": "Calle Niebla 404",
+        "telefono": "7890123"
+    },
+    {
+        "id": 8,
+        "nombre": "Laura Morales",
+        "direccion": "Calle Mar 505",
+        "telefono": "8901234"
+    },
+    {
+        "id": 9,
+        "nombre": "Miguel Ruiz",
+        "direccion": "Calle Rayo 606",
+        "telefono": "9012345"
+    },
+    {
+        "id": 10,
+        "nombre": "Elena Martínez",
+        "direccion": "Calle Árbol 707",
+        "telefono": "0123456"
+    },
+    {
+        "id": 11,
+        "nombre": "Andrés Gómez",
+        "direccion": "Calle Río 808",
+        "telefono": "1234567"
+    },
+    {
+        "id": 12,
+        "nombre": "Claudia Fernández",
+        "direccion": "Calle Cielo 909",
+        "telefono": "2345678"
+    },
+    {
+        "id": 13,
+        "nombre": "Raúl Pérez",
+        "direccion": "Calle Agua 1010",
+        "telefono": "3456789"
+    },
+    {
+        "id": 14,
+        "nombre": "Isabel López",
+        "direccion": "Calle Tierra 1111",
+        "telefono": "4567890"
+    },
+    {
+        "id": 15,
+        "nombre": "Victor Soto",
+        "direccion": "Calle Viento 1212",
+        "telefono": "5678901"
+    }
+]

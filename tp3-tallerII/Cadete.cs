@@ -33,4 +33,8 @@ public class Cadete
     [JsonPropertyName("telefono")]
     public string Telefono { get => telefono; set => telefono = value; }
 
+    public override string ToString()
+    {
+        return $"CADETE: {id} - {nombre} - {direccion} - {telefono}";
+    }
 }
